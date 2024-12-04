@@ -1,22 +1,22 @@
 import boto3
 import json
-
+import os
 from decimal import Decimal
 
 
 class PricingUtility(object):
     def __init__(self, region_name, profile_name=None):
 
-        closest_api_region = 'us-east-1'
+        closest_api_region = os.environ.get("AWS_DEFAULT_REGION","us-east-1")
 
-        AMERICAN_REGIONS = ['us-east-1', 'us-east-2',
-                            'us-west-1', 'us-west-2',
-                            'us-gov-west-1', 'us-gov-west-2',
-                            'ca-central-1', 'sa-east-1']
-        # the pricing API is only available in us-east-1 and ap-south-1
-        # pick the closest endpoint to the supplied region
-        if region_name not in AMERICAN_REGIONS:
-            closest_api_region = 'ap-south-1'
+        # AMERICAN_REGIONS = ['us-east-1', 'us-east-2',
+        #                     'us-west-1', 'us-west-2',
+        #                     'us-gov-west-1', 'us-gov-west-2',
+        #                     'ca-central-1', 'sa-east-1']
+        # # the pricing API is only available in us-east-1 and ap-south-1
+        # # pick the closest endpoint to the supplied region
+        # if region_name not in AMERICAN_REGIONS:
+        #     closest_api_region = 'ap-south-1'
         
         self.session = boto3.session.Session(profile_name=profile_name)
         self.pricing_client = self.session.client(
